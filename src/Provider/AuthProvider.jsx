@@ -11,10 +11,30 @@ const AuthProvider = ({children }) => {
     const [user,setUser] = useState({
         name : 'sndpbag',
     })
+    const [loading,setLoading] = useState(true);
 
     
+//  google login
+const googleLogin = ()=>
+{
+ const provider = new GoogleAuthProvider();
+ return signInWithPopup(auth,provider);
+}
 
 
+//  user store
+useEffect(()=>{
+ const unsubscribe = onAuthStateChanged(auth,(currentUser) =>{
+    setUser(currentUser);
+    console.log(currentUser);
+    setLoading(false);
+ });
+ 
+ return ()=> unsubscribe();
+    
+ 
+
+},[]);
 
  
 
@@ -25,7 +45,8 @@ const AuthProvider = ({children }) => {
 
     const authInfo = {
         user,
-      
+      googleLogin,
+      loading
     }
 
 
