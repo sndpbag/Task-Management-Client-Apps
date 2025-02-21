@@ -2,6 +2,7 @@
 
 import { Droppable } from "react-beautiful-dnd";
 import TaskItem from "./TaskItem";
+import { motion } from "framer-motion";
 
 const TaskColumn = ({ title, id, bgColor, tasks }) => {
   return (
@@ -10,16 +11,19 @@ const TaskColumn = ({ title, id, bgColor, tasks }) => {
 
       <Droppable droppableId={id}>
         {(provided) => (
-          <div
+          <motion.div
             ref={provided.innerRef}
             {...provided.droppableProps}
             className="space-y-2 min-h-[100px] p-2 bg-gray-800 rounded-lg"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
           >
             {tasks.map((task, index) => (
               <TaskItem key={`${id}-${index}`} task={task} index={index} />
             ))}
             {provided.placeholder}
-          </div>
+          </motion.div>
         )}
       </Droppable>
     </div>

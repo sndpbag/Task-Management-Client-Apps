@@ -52,12 +52,12 @@ const TaskItem = ({ task, index }) => {
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          initial={{ opacity: 0, y: -10 }} // Start animation
-          animate={{ opacity: 1, y: 0 }} // End animation
-          exit={{ opacity: 0, y: 10 }} // Exit animation
-          whileHover={{ scale: 1.05 }} // Small zoom on hover
-          whileTap={{ scale: 0.95 }} // Click effect
-          transition={{ duration: 0.2 }}
+          initial={{ opacity: 0, y: -10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 10 }}
+          whileHover={{ scale: 1.05, boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)" }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
           className="p-3 bg-white text-gray-900 rounded-md shadow-md flex justify-between items-center cursor-grab"
         >
           <span>{task}</span>

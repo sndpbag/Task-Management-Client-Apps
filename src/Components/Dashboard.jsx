@@ -4,6 +4,7 @@ import { useState } from "react";
 import TaskColumn from "./TaskColumn";
 import TaskModal from "./TaskModal";
 import { DragDropContext } from "react-beautiful-dnd";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,11 +45,15 @@ const Dashboard = () => {
 
       {/* ✅ Drag & Drop Context */}
       <DragDropContext onDragEnd={handleDragEnd}>
-        <div className="grid grid-cols-3 gap-6 w-full max-w-5xl">
+        <motion.div className="grid grid-cols-3 gap-6 w-full max-w-5xl"
+         initial={{ opacity: 0 }}
+         animate={{ opacity: 1 }}
+         transition={{ duration: 0.3 }}
+        >
           <TaskColumn title="To-Do" id="todo" bgColor="bg-red-500" tasks={tasks.todo} />
           <TaskColumn title="In Progress" id="inProgress" bgColor="bg-yellow-500" tasks={tasks.inProgress} />
           <TaskColumn title="Done" id="done" bgColor="bg-green-500" tasks={tasks.done} />
-        </div>
+        </motion.div>
       </DragDropContext>
 
       {/* Task Modal */}
