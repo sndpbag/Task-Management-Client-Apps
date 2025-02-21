@@ -1,6 +1,6 @@
 
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskColumn from "./TaskColumn";
 import TaskModal from "./TaskModal";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -34,6 +34,24 @@ const Dashboard = () => {
     }));
   };
 
+  //  for dark mode
+  const [isDarkMode, setIsDarkMode] = useState(
+    localStorage.getItem("darkMode") === "true"
+  );
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("darkMode", isDarkMode);
+  }, [isDarkMode]);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
   return (
     <div className="min-h-screen bg-gray-900 p-6 flex flex-col items-center">
       <button
@@ -41,6 +59,15 @@ const Dashboard = () => {
         className="mb-6 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600"
       >
         + Create Task
+      </button>
+
+
+       {/* Dark Mode Toggle Button 🌙 */}
+       <button
+        onClick={toggleDarkMode}
+        className="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-black dark:text-white rounded-lg"
+      >
+        {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
       </button>
 
       {/* ✅ Drag & Drop Context */}

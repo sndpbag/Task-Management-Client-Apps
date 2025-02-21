@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 const TaskColumn = ({ title, id, bgColor, tasks }) => {
   return (
-    <div className={`${bgColor} p-4 rounded-lg shadow-lg`}>
+    <div className={`${bgColor} dark:bg-gray-700 p-4 rounded-lg shadow-lg`}>
       <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
 
       <Droppable droppableId={id}>
