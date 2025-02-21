@@ -15,3 +15,9 @@ Solution: Use --legacy-peer-deps
 Run this command to force install:
  
 npm install react-beautiful-dnd --legacy-peer-deps 
+
+
+<!--  add motion farmar animation -->
+npm install framer-motion --force
+
+
