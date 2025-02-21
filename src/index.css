@@ -1,4 +1,6 @@
 @import "tailwindcss";
  
 
- 
+.dark .bg-gray-900 {
+    background-color: #c9d3e7; /* Should exist */
+  }
