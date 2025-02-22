@@ -1,23 +1,71 @@
 
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import TaskColumn from "./TaskColumn";
 import TaskModal from "./TaskModal";
 import { DragDropContext } from "react-beautiful-dnd";
 import { motion } from "framer-motion";
+import { AuthContext } from "../Provider/AuthProvider";
+import Swal from "sweetalert2";
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  //  context api for user email
+  const {user} = useContext(AuthContext);
+
+ 
   // ✅ State: Dynamic task categories
   const [tasks, setTasks] = useState({
-    todo: ["Learn React", "Study JavaScript"],
-    inProgress: ["Build a project"],
-    done: ["Install Node.js"],
+    todo: [],
+    inProgress: [],
+    done: [],
   });
 
+    // ✅ Fetch tasks when the component mounts
+    useEffect(() => {
+      if (!user?.email) return; // Ensure user is logged in before fetching
+  
+      const fetchTasks = async () => {
+        try {
+          const response = await fetch(`http://localhost:5000/tasks/${user.email}`);
+          const data = await response.json();
+          // console.log(data); // Check response
+   // ✅ Organizing tasks by category
+   const categorizedTasks = {
+    todo: [],
+    inProgress: [],
+    done: [],
+  };
+
+  data.forEach((task) => {
+    if (categorizedTasks[task.category]) {
+      categorizedTasks[task.category].push(task.title); // Storing titles only
+       
+    }
+  });
+
+  setTasks(categorizedTasks);
+ 
+
+  
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      };
+  
+      fetchTasks();
+    }, [user?.email]); // R
+
+
+
+
+
+
+
+
   // ✅ Drag & Drop Handler
-  const handleDragEnd = (result) => {
+  const handleDragEnd = async  (result) => {
     if (!result.destination) return;
 
     const { source, destination } = result;
@@ -32,6 +80,43 @@ const Dashboard = () => {
       [source.droppableId]: sourceTasks,
       [destination.droppableId]: destTasks,
     }));
+    
+
+    console.log(result);
+  // ✅ API Call to update task category in MongoDB
+  try {
+    const response = await fetch(`http://localhost:5000/updateTask`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ category: destination.droppableId, title: result?.draggableId }),
+    });
+
+    const data = await response.json();
+    console.log("Updated Task:", data);
+
+    if (data.success) {
+      Swal.fire({
+        title: "Task Moved!",
+        text: data.message,
+        icon: "success",
+      });
+    } else {
+      Swal.fire({
+        title: "Task Moved!",
+        text: data.message,
+        icon: "success",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating task:", error);
+    Swal.fire({
+      title: "Error!",
+      text: "Failed to update task category.",
+      icon: "error",
+    });
+  }
   };
 
   //  for dark mode
@@ -51,6 +136,8 @@ const Dashboard = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
+
+ 
 
   return (
     <div className="min-h-screen bg-gray-900 p-6 flex flex-col items-center">

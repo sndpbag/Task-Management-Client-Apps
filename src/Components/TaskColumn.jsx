@@ -5,6 +5,7 @@ import TaskItem from "./TaskItem";
 import { motion } from "framer-motion";
 
 const TaskColumn = ({ title, id, bgColor, tasks }) => {
+  
   return (
     <div className={`${bgColor}  p-4 rounded-lg shadow-lg`}>
       <h2 className="text-lg font-semibold text-white mb-4">{title}</h2>
