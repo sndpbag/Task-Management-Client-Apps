@@ -159,7 +159,7 @@ const Dashboard = () => {
 
       {/* ✅ Drag & Drop Context */}
       <DragDropContext onDragEnd={handleDragEnd}>
-        <motion.div className="grid grid-cols-3 gap-6 w-full max-w-5xl"
+        <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl"
          initial={{ opacity: 0 }}
          animate={{ opacity: 1 }}
          transition={{ duration: 0.3 }}
