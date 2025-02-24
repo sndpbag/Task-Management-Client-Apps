@@ -4,9 +4,11 @@ import { Draggable } from "react-beautiful-dnd";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 
-const TaskItem = ({ task, index }) => {
+const TaskItem = ({ task, index, fetchTasks }) => {
 
 
+   
+    
 
   //  handel delete task
   const handelDeleteTask = async (title)=>
@@ -23,14 +25,15 @@ const TaskItem = ({ task, index }) => {
         });
     
         const data = await response.json();
-        console.log("Updated Task:", data);
+        // console.log("Updated Task:", data);
     
         if (data.success) {
           Swal.fire({
-            title: "Task Moved!",
+            title: "Task Delete!",
             text: data.message,
             icon: "success",
           });
+          fetchTasks();
         } else {
           Swal.fire({
             title: "Task Moved!",

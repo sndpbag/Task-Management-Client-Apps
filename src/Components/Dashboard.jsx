@@ -12,9 +12,9 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   //  context api for user email
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
- 
+
   // ✅ State: Dynamic task categories
   const [tasks, setTasks] = useState({
     todo: [],
@@ -22,40 +22,46 @@ const Dashboard = () => {
     done: [],
   });
 
-    // ✅ Fetch tasks when the component mounts
-    useEffect(() => {
-      if (!user?.email) return; // Ensure user is logged in before fetching
-  
-      const fetchTasks = async () => {
-        try {
-          const response = await fetch(`http://localhost:5000/tasks/${user.email}`);
-          const data = await response.json();
-          // console.log(data); // Check response
-   // ✅ Organizing tasks by category
-   const categorizedTasks = {
-    todo: [],
-    inProgress: [],
-    done: [],
+  const fetchTasks = async () => {
+
+    if (!user?.email) return; // Ensure user is logged in before fetching
+    
+    try {
+      const response = await fetch(`http://localhost:5000/tasks/${user.email}`);
+      const data = await response.json();
+      // console.log(data); // Check response
+      // ✅ Organizing tasks by category
+      const categorizedTasks = {
+        todo: [],
+        inProgress: [],
+        done: [],
+      };
+
+      data.forEach((task) => {
+        if (categorizedTasks[task.category]) {
+          categorizedTasks[task.category].push(task.title); // Storing titles only
+
+        }
+      });
+
+      setTasks(categorizedTasks);
+
+
+
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
   };
 
-  data.forEach((task) => {
-    if (categorizedTasks[task.category]) {
-      categorizedTasks[task.category].push(task.title); // Storing titles only
-       
-    }
-  });
 
-  setTasks(categorizedTasks);
- 
+  // ✅ Fetch tasks when the component mounts
+  useEffect(() => {
+   
 
   
-        } catch (error) {
-          console.error("Error fetching tasks:", error);
-        }
-      };
-  
-      fetchTasks();
-    }, [user?.email]); // R
+
+    fetchTasks();
+  }, [user?.email]); // R
 
 
 
@@ -65,7 +71,7 @@ const Dashboard = () => {
 
 
   // ✅ Drag & Drop Handler
-  const handleDragEnd = async  (result) => {
+  const handleDragEnd = async (result) => {
     if (!result.destination) return;
 
     const { source, destination } = result;
@@ -80,43 +86,43 @@ const Dashboard = () => {
       [source.droppableId]: sourceTasks,
       [destination.droppableId]: destTasks,
     }));
-    
 
-    console.log(result);
-  // ✅ API Call to update task category in MongoDB
-  try {
-    const response = await fetch(`http://localhost:5000/updateTask`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ category: destination.droppableId, title: result?.draggableId }),
-    });
 
-    const data = await response.json();
-    console.log("Updated Task:", data);
-
-    if (data.success) {
-      Swal.fire({
-        title: "Task Moved!",
-        text: data.message,
-        icon: "success",
+    // console.log(result);
+    // ✅ API Call to update task category in MongoDB
+    try {
+      const response = await fetch(`http://localhost:5000/updateTask`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ category: destination.droppableId, title: result?.draggableId }),
       });
-    } else {
+
+      const data = await response.json();
+      console.log("Updated Task:", data);
+
+      if (data.success) {
+        Swal.fire({
+          title: "Task Moved!",
+          text: data.message,
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Task Moved!",
+          text: data.message,
+          icon: "success",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating task:", error);
       Swal.fire({
-        title: "Task Moved!",
-        text: data.message,
-        icon: "success",
+        title: "Error!",
+        text: "Failed to update task category.",
+        icon: "error",
       });
     }
-  } catch (error) {
-    console.error("Error updating task:", error);
-    Swal.fire({
-      title: "Error!",
-      text: "Failed to update task category.",
-      icon: "error",
-    });
-  }
   };
 
   //  for dark mode
@@ -137,7 +143,7 @@ const Dashboard = () => {
     setIsDarkMode(!isDarkMode);
   };
 
- 
+
 
   return (
     <div className="min-h-screen bg-gray-900 p-6 flex flex-col items-center">
@@ -149,8 +155,8 @@ const Dashboard = () => {
       </button>
 
 
-       {/* Dark Mode Toggle Button 🌙 */}
-       <button
+      {/* Dark Mode Toggle Button 🌙 */}
+      <button
         onClick={toggleDarkMode}
         className="mb-6 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-black dark:text-white rounded-lg"
       >
@@ -160,18 +166,18 @@ const Dashboard = () => {
       {/* ✅ Drag & Drop Context */}
       <DragDropContext onDragEnd={handleDragEnd}>
         <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl"
-         initial={{ opacity: 0 }}
-         animate={{ opacity: 1 }}
-         transition={{ duration: 0.3 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
         >
-          <TaskColumn title="To-Do" id="todo" bgColor="bg-red-500" tasks={tasks.todo} />
-          <TaskColumn title="In Progress" id="inProgress" bgColor="bg-yellow-500" tasks={tasks.inProgress} />
-          <TaskColumn title="Done" id="done" bgColor="bg-green-500" tasks={tasks.done} />
+          <TaskColumn title="To-Do" id="todo" bgColor="bg-red-500" fetchTasks={fetchTasks} tasks={tasks.todo} />
+          <TaskColumn title="In Progress" id="inProgress" bgColor="bg-yellow-500" fetchTasks={fetchTasks} tasks={tasks.inProgress} />
+          <TaskColumn title="Done" id="done" bgColor="bg-green-500" fetchTasks={fetchTasks} tasks={tasks.done} />
         </motion.div>
       </DragDropContext>
 
       {/* Task Modal */}
-      {isModalOpen && <TaskModal setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && <TaskModal fetchTasks={fetchTasks} setIsModalOpen={setIsModalOpen} />}
     </div>
   );
 };

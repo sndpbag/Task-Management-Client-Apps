@@ -4,7 +4,9 @@ import { Droppable } from "react-beautiful-dnd";
 import TaskItem from "./TaskItem";
 import { motion } from "framer-motion";
 
-const TaskColumn = ({ title, id, bgColor, tasks }) => {
+const TaskColumn = ({ title, id, bgColor, tasks ,fetchTasks }) => {
+
+   
   
   return (
     <div className={`${bgColor}  p-4 rounded-lg shadow-lg`}>
@@ -21,7 +23,7 @@ const TaskColumn = ({ title, id, bgColor, tasks }) => {
             transition={{ duration: 0.5 }}
           >
             {tasks.map((task, index) => (
-              <TaskItem key={`${id}-${index}`} task={task} index={index} />
+              <TaskItem key={`${id}-${index}`} fetchTasks={fetchTasks}   task={task} index={index} />
             ))}
             {provided.placeholder}
           </motion.div>

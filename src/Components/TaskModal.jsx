@@ -4,7 +4,7 @@ import { AuthContext } from "../Provider/AuthProvider";
 
  
 
-const TaskModal = ({ setIsModalOpen }) => {
+const TaskModal = ({ setIsModalOpen, fetchTasks }) => {
 
   //  use context api for user info
   const {user} = useContext(AuthContext);
@@ -36,7 +36,7 @@ Swal.fire({
 
   e.target.reset();
   setIsModalOpen(false);
- 
+  fetchTasks();
 
 }
 else
