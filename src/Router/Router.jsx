@@ -5,6 +5,7 @@ import {
 import Login from "../Components/Login";
 import Dashboard from "../Components/Dashboard";
 import ErrorPage from "../Components/ErrorPage";
+import PrivateRoute from "./PrivateRoute";
  
  
 
@@ -20,7 +21,7 @@ import ErrorPage from "../Components/ErrorPage";
     },
     {
         path: "dashboard",
-        element: <Dashboard></Dashboard>
+        element: <PrivateRoute> <Dashboard></Dashboard></PrivateRoute>
     },
   
   ]);
