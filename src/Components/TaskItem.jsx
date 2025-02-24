@@ -3,17 +3,25 @@
 import { Draggable } from "react-beautiful-dnd";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
+import { useState } from "react";
+import UpdateModal from "./UpdateModal";
 
 const TaskItem = ({ task, index, fetchTasks }) => {
 
+//  for update modal open with state
 
+const [openModal,setOpenModal] = useState(false);
+
+const handelUpdateTask = (title) => {
+  setOpenModal(true);
+}
    
     
 
   //  handel delete task
   const handelDeleteTask = async (title)=>
   {
-    alert(title)
+   
 
     try {
         const response = await fetch(`http://localhost:5000/deleteTask`, {
@@ -52,6 +60,7 @@ const TaskItem = ({ task, index, fetchTasks }) => {
   }
  
   return (
+    <>
     <Draggable draggableId={`task-${task}-${index}`} index={index}>
       {(provided) => (
         <motion.div
@@ -68,12 +77,16 @@ const TaskItem = ({ task, index, fetchTasks }) => {
         >
           <span>{task}</span>
           <div className="flex gap-2">
-            <button className="px-2 py-1 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 cursor-pointer">✏️</button>
+            <button onClick={()=>handelUpdateTask(task)} className="px-2 py-1 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 cursor-pointer">✏️</button>
             <button onClick={()=>handelDeleteTask(task)} className="px-2 py-1 bg-red-500 text-white rounded shadow hover:bg-red-600 cursor-pointer">🗑️</button>
           </div>
         </motion.div>
       )}
+
+     
     </Draggable>
+     {openModal && <UpdateModal fetchTasks={fetchTasks} setOpenModal={setOpenModal}></UpdateModal>}
+     </>
   );
 };
 
