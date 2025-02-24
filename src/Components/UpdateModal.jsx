@@ -1,12 +1,37 @@
+import { useEffect, useState } from "react";
+
  
  
 
- const handeludateTask = ()=>
- {
-    
- }
 
-const UpdateModal = ({setOpenModal,fetchTasks}) => {
+const UpdateModal = ({setOpenModal,fetchTasks,updateinfo}) => {
+
+
+    const [category, setCategory] = useState("");
+   // Update category when updateinfo is available
+    useEffect(()=>{
+        if(updateinfo?.category)
+        {
+            setCategory(updateinfo?.category);
+        }
+      
+    },[updateinfo])
+
+    const handeludateTask = (e)=>
+        {
+           e.preventDefault();
+           const title = e.target.title.value;
+           const description = e.target.description.value;
+           const endDateTime = e.target.endDateTime.value;
+           const category = e.target.category.value;
+           const task = {title,description,endDateTime,category};
+           console.log(task);
+        }
+
+
+
+
+
     return (
         <div className="fixed inset-0 bg-[rgba(0,0,0,0.8)] bg-opacity-50 flex justify-center items-center">
         <form onSubmit={handeludateTask}>
@@ -18,6 +43,7 @@ const UpdateModal = ({setOpenModal,fetchTasks}) => {
           type="text"
           name="title"
           placeholder="Task Title"
+          defaultValue={updateinfo?.title}
           className="w-full p-2 border rounded mb-4"
         />
 
@@ -26,6 +52,7 @@ const UpdateModal = ({setOpenModal,fetchTasks}) => {
           type="text"
           name="description"
           placeholder="Enter Description"
+          defaultValue={updateinfo?.description}
           className="w-full p-2 border rounded mb-4"
         />
 
@@ -33,12 +60,16 @@ const UpdateModal = ({setOpenModal,fetchTasks}) => {
                <input
           type="datetime-local"
           name="endDateTime"
-           
+          defaultValue={updateinfo?.endDateTime}
           className="w-full p-2 border rounded mb-4"
         />
 
         {/* Status Dropdown */}
-        <select name="category" className="w-full p-2 border rounded mb-4">
+        <select name="category" value={category}
+
+        onChange={e=>setCategory(e.target.value)}
+         className="w-full p-2 border rounded mb-4">
+
           <option value="todo">To-Do</option>
           <option value="inProgress">In Progress</option>
           <option value="done">Done</option>

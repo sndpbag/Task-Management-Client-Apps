@@ -5,15 +5,27 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { useState } from "react";
 import UpdateModal from "./UpdateModal";
+import axios from "axios";
 
 const TaskItem = ({ task, index, fetchTasks }) => {
 
 //  for update modal open with state
 
 const [openModal,setOpenModal] = useState(false);
+const [updateinfo,setUpdateInfo] = useState([]);
 
-const handelUpdateTask = (title) => {
-  setOpenModal(true);
+const handelUpdatefetchTask = async (title) => {
+  try {
+    setOpenModal(true);
+    
+    const response = await axios.put('http://localhost:5000/task/single/fetch', { title });
+
+    // console.log(response.data); // ✅ Logs response data correctly
+    setUpdateInfo(response.data);
+    fetchTasks();
+  } catch (error) {
+    console.error("Error updating task:", error.response ? error.response.data : error.message);
+  }
 }
    
     
@@ -77,7 +89,7 @@ const handelUpdateTask = (title) => {
         >
           <span>{task}</span>
           <div className="flex gap-2">
-            <button onClick={()=>handelUpdateTask(task)} className="px-2 py-1 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 cursor-pointer">✏️</button>
+            <button onClick={()=>handelUpdatefetchTask(task)} className="px-2 py-1 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 cursor-pointer">✏️</button>
             <button onClick={()=>handelDeleteTask(task)} className="px-2 py-1 bg-red-500 text-white rounded shadow hover:bg-red-600 cursor-pointer">🗑️</button>
           </div>
         </motion.div>
@@ -85,7 +97,7 @@ const handelUpdateTask = (title) => {
 
      
     </Draggable>
-     {openModal && <UpdateModal fetchTasks={fetchTasks} setOpenModal={setOpenModal}></UpdateModal>}
+     {openModal && <UpdateModal updateinfo={updateinfo}  fetchTasks={fetchTasks} setOpenModal={setOpenModal}></UpdateModal>}
      </>
   );
 };
