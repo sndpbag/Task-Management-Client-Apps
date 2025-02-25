@@ -8,6 +8,7 @@ import TaskItem from "./TaskItem";
 import { motion } from "framer-motion";
 import { FaPlus } from "react-icons/fa";
 
+
 const TaskColumn = ({ title, id, bgColor, tasks, fetchTasks }) => {
   const taskCount = tasks.length;
 

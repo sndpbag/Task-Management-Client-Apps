@@ -123,6 +123,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import { FiSave, FiX, FiAlertCircle, FiCalendar, FiEdit, FiTag } from "react-icons/fi";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const UpdateModal = ({ setOpenModal, fetchTasks, updateinfo }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -159,7 +160,7 @@ const UpdateModal = ({ setOpenModal, fetchTasks, updateinfo }) => {
     setIsLoading(true);
 
     try {
-      const response = await axios.put('http://localhost:5000/update/task', formData);
+      const response = await axios.put(`${API_URL}/update/task`, formData);
       
       if (response.data.success) {
         Swal.fire({

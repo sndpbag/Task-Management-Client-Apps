@@ -192,6 +192,10 @@ import { DragDropContext } from "react-beautiful-dnd";
 import { motion } from "framer-motion";
 import { AuthContext } from "../Provider/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
+
+console.log(API_URL)
 
 const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -209,8 +213,10 @@ const Dashboard = () => {
     if (!user?.email) return; // Ensure user is logged in before fetching
 
     try {
-      const response = await fetch(`http://localhost:5000/tasks/${user.email}`);
-      const data = await response.json();
+      const response = await axios.get(`${API_URL}/tasks/${user.email}`);
+      // const data = await response.json();
+      const data = response.data; // ✅ Correct
+       
 
       // ✅ Organizing tasks by category (store full task objects)
       const categorizedTasks = {
@@ -262,7 +268,7 @@ const Dashboard = () => {
 
     // ✅ API Call to update task in MongoDB with full details
     try {
-      const response = await fetch(`http://localhost:5000/updateTask`, {
+      const response = await fetch(`${API_URL}/updateTask`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

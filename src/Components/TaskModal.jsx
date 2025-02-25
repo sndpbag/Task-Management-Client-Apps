@@ -113,6 +113,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../Provider/AuthProvider";
 import { motion } from "framer-motion";
 import { FiX, FiCalendar, FiAlignLeft, FiTag, FiSave } from "react-icons/fi";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TaskModal = ({ setIsModalOpen, fetchTasks }) => {
   const { user } = useContext(AuthContext);
@@ -149,7 +150,7 @@ const TaskModal = ({ setIsModalOpen, fetchTasks }) => {
         user_email: user.email
       };
 
-      const response = await fetch("http://localhost:5000/add-task", {
+      const response = await fetch(`${API_URL}/add-task`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(task),

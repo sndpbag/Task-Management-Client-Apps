@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
 import UpdateModal from "./UpdateModal";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TaskItem = ({ task, description, id, date,  index, fetchTasks }) => {
 
@@ -47,7 +48,7 @@ const handelUpdatefetchTask = async (id) => {
   try {
     setOpenModal(true);
     
-    const response = await axios.post('http://localhost:5000/task/single/fetch', { id });
+    const response = await axios.post(`${API_URL}/task/single/fetch`, { id });
 
     // console.log(response.data); // ✅ Logs response data correctly
     setUpdateInfo(response.data);
@@ -65,7 +66,7 @@ const handelUpdatefetchTask = async (id) => {
    
   
     try {
-        const response = await fetch(`http://localhost:5000/deleteTask`, {
+        const response = await fetch(`${API_URL}/deleteTask`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
