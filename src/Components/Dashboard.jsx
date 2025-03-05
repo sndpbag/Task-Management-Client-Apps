@@ -64,7 +64,7 @@ const Dashboard = () => {
   const handleLogout = () => {
     logOutbyGoogle()
     .then(()=>{
-       alert("Welcome again")
+       alert("Please Visit again")
     }).catch(
       error => console.log(error)
     )
