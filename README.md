@@ -2,7 +2,7 @@
 
 A modern task management web app with **dark mode**, **real-time sync**, and an **intuitive drag & drop interface**. Built with **React**, **Firebase**, and **Tailwind CSS**.
 
-![Task Management App Preview](./task-application.png)
+![Task Management App Preview](./public/task%20application.png)
 
 ---
 
@@ -35,8 +35,8 @@ A modern task management web app with **dark mode**, **real-time sync**, and an 
 
 ### 1️⃣ Clone the repository
 ```bash
- git clone https://github.com/yourusername/task-management-app.git
- cd task-management-app
+ git clone https://github.com/sndpbag/Task-Management-Client-Apps.git
+ cd Task-Management-Client-Apps
 ```
 
 ### 2️⃣ Install dependencies
@@ -53,12 +53,14 @@ A modern task management web app with **dark mode**, **real-time sync**, and an 
 ### 4️⃣ Configure environment variables
 Create a `.env` file in the project root and add:
 ```env
-REACT_APP_FIREBASE_API_KEY=your-api-key
-REACT_APP_FIREBASE_AUTH_DOMAIN=your-auth-domain
-REACT_APP_FIREBASE_PROJECT_ID=your-project-id
-REACT_APP_FIREBASE_STORAGE_BUCKET=your-bucket
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-REACT_APP_FIREBASE_APP_ID=your-app-id
+VITE_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_AUTH_DOMAIN=your-auth-domain
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
+VITE_FIREBASE_APP_ID=your-app-id
+
+VITE_API_URL=https://task-management-server-three-ivory.vercel.app
 ```
 
 ### 5️⃣ Start the development server
